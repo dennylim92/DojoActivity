@@ -1,0 +1,53 @@
+@model Wrapper
+
+<style>
+    .container{
+        height: 550px;
+        width: 1200px;
+    }
+
+    .main{
+        height: 600px;
+        width: 500px;
+        display: inline-block;
+        vertical-align: top;
+    }
+</style>
+
+<div class="container">
+  <div class="main">
+    <h1>@Model.Activity.Title</h1>
+    <hr>
+    <a asp-action="Home">Home</a>
+    <a href="logout">Log Out</a>
+    @if (@ViewBag.userID == @Model.Activity.UserId)
+    {
+      <form action="/delete/@Model.Activity.ActivityId">
+        <input type="hidden" value="@ViewBag.userID">
+        <input type="submit" value="Delete">
+      </form>
+    }
+    else if (Model.Activity.Participants.Any(p => p.UserId == @ViewBag.userID))
+    {
+      <form action="/leave/@Model.Activity.ActivityId">
+        <input type="hidden" value="@ViewBag.userID">
+        <input type="submit" value="Leave">
+      </form>
+    }
+    else
+    {
+      <form action="/join/@Model.Activity.ActivityId">
+        <input type="hidden" value="@ViewBag.userID">
+        <input type="submit" value="Join">
+      </form>
+    }
+    <h3>Event Coordinator: @Model.Activity.User.Name</h3>
+    <h3>Description:</h3>
+    <p>@Model.Activity.Description</p>
+    <h3>Participants:</h3>
+    @foreach(var activity in Model.Activity.Participants)
+    {
+      <p>@activity.User.Name</p>
+    }
+  </div>
+</div>

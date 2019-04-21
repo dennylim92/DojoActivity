@@ -1,0 +1,14 @@
+@model LoginForm
+<form asp-action="LoginUser" method="post">
+    <div class="form-group">
+        <span asp-validation-for="lEmail"></span>
+        <label asp-for="lEmail">Email</label>
+        <input asp-for="lEmail">
+    </div>
+    <div class="form-group">
+        <span asp-validation-for="lPassword"></span>
+        <label asp-for="lPassword">Password</label>
+        <input asp-for="lPassword">
+    </div>
+    <button>Log In</button>
+</form>  

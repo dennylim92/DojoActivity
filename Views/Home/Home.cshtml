@@ -1,0 +1,72 @@
+@model List<Activity>
+
+<style>
+    table {
+    border-collapse: collapse;
+}
+th {
+    background-color: #ccc;
+    padding: 2px;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td{
+    width: 160px;
+    height: 30px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+td {
+    padding: 5px;
+    text-align: left;
+}
+</style>
+
+
+<h1>Dojo Activity Center</h1>
+<h4>Welcome, @ViewBag.User.Name</h4>
+<a href="logout">Log Out</a>
+<hr>
+<table>
+    <tr>
+        <th>Activity</th>
+        <th>Date and Time</th>
+        <th>Duration</th>
+        <th>Event Coordinator</th>
+        <th>No. of Participants</th>
+        <th>Actions</th>
+    </tr>
+@foreach (Activity activity in Model)
+{
+
+    <tr>
+        <td><a href="/activity/@activity.ActivityId">@activity.Title</a></td>
+        <!-- DATE AND TIME -->
+        <td>@activity.Date.ToString("M/dd @ h:mm tt")</td>
+        <!-- DURATION -->
+        <td>@activity.Duration</td>
+        <!-- USER WHO CREATED ACTIVITY -->
+        <td>@activity.User.Name</td>
+        <!-- NUMBER OF GUESTS -->
+        <td>@activity.Participants.Count</td>
+        <!-- ACTION LINKS -->
+        @if (activity.UserId == @ViewBag.idUser)
+        {
+            <td><a href="/delete/@activity.ActivityId">Delete</a></td>
+        }
+        else if(activity.Participants.Any(p => p.UserId == @ViewBag.idUser))
+        {
+            <td><a href="/leave/@activity.ActivityId">Leave</a></td>
+        }
+        else
+        {
+            <td><a href="/join/@activity.ActivityId">Join</a></td>
+        }
+    </tr>
+}
+</table>
+<br>
+<form action="new">
+    <input type="submit" value="Add New Activity">
+</form>
